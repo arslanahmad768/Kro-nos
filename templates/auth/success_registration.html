@@ -1,0 +1,50 @@
+{% extends "../base_email.html" %}
+
+{% block content %}
+{% load i18n %}
+  <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tbody>
+      <tr>
+        <td style="display: block; margin: 0 auto; text-align: center;">
+          <h1 class="title" style="font-family: 'Oswald, sans-serif';">{% blocktrans %}Dear{% endblocktrans %} {{ user.get_full_name }}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: justify; padding: 20px 0;">
+          <p class="text">{% blocktrans %}You have been invited to join the "KROnos". Please, use the following link and credentials to log in:{% endblocktrans %}</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: left;">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+              <tr>
+                <td style="padding: 5px 0;">
+                  <span class="text item">{% blocktrans %}KROnos link:{% endblocktrans %}</span>
+                  <a class="text item" style="font-weight: 600;" href="{{ site_host }}">{{ site_host }}</a>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 5px 20px  5px 0;">
+                  <span class="text item">{% blocktrans %}Email:{% endblocktrans %}</span>
+                  <span class="text item" style="font-weight: 600;">{{ user.email }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 5px 20px  5px 0;">
+                  <span class="text item">{% blocktrans %}Password:{% endblocktrans %}</span>
+                  <span class="text item" style="font-weight: 600;">{{ password }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: justify; padding: 20px 0;">
+          <p class="text">{% blocktrans %}You can change your password on your Profile page.{% endblocktrans %}</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock content %}

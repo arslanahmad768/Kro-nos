@@ -1,0 +1,346 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}KROnos{% endblock title %}</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+</head>
+<body>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        table{
+            font-family: monospace;
+            font-size: 9px;
+            width: 100%;
+        }
+
+        th, td{
+            border: 1px solid black;
+            box-sizing: border-box;
+            padding: 2px;
+            line-height: 1;
+            margin: 0;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+        th {
+            text-align: center;
+            background-color: lightblue;
+        }
+
+        .logo {
+            margin: 0 auto;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+    </style>
+    <div class="logo">
+        <img src="{{api_host}}/static/images/KR_Logo.jpg" alt="logo" height="100">
+    </div>
+
+    <table>
+
+        <tbody>
+
+            {% comment %} Header Block {% endcomment %}
+
+            <tr>
+                <th>Date</th>
+                <td>{{ date }}</td>
+                <th>Unit #</th>
+                <td>{{ unit }}</td>
+                <th>Lease Name</th>
+                <td colspan="2">{{ lease_name }}</td>
+                <th>County</th>
+                <td style="word-wrap: break-word">{{ county }}</td>
+                <th style="width: 40px;">State</th>
+                <td style="width: 40px;">{{ state.name }}</td>
+            </tr>
+
+            {% comment %} Header Block End {% endcomment %}
+
+            {% comment %} Customer Block {% endcomment %}
+
+            <tr>
+                <th colspan="2">K&R WO#</th>
+                <th colspan="3">Customer</th>
+                <th colspan="2">Customer PO/WO</th>
+                <th colspan="4">Who Called?</th>
+            </tr>
+            <tr>
+                <td colspan="2">{{ connected_job.number }}</td>
+                <td colspan="3">{{ connected_job.customer.name }}</td>
+                <td colspan="2">{{ customer_po_wo }}</td>
+                <td colspan="4">{{ who_called }}</td>
+            </tr>
+
+            {% comment %} Customer Block End {% endcomment %}
+
+            {% comment %} Engine Block {% endcomment %}
+
+            <tr>
+                <th colspan="2">Engine Model</th>
+                <th colspan="3">Engine Serial #</th>
+                <th colspan="2">Comp Model</th>
+                <th colspan="3">Comp Serial #</th>
+                <th>Unit Hours</th>
+            </tr>
+            <tr>
+                <td colspan="2">{{ engine_model }}</td>
+                <td colspan="3">{{ engine_serial }}</td>
+                <td colspan="2">{{ comp_model }}</td>
+                <td colspan="3">{{ comp_serial }}</td>
+                <td>{{ unit_hours }}</td>
+            </tr>
+
+            {% comment %} Engine Block End {% endcomment %}
+
+            {% if employee_works %}
+            {% comment %} Employee Work Block {% endcomment %}
+
+            <tr>
+                <th colspan="4">Employee Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Hours Worked</th>
+                <th colspan="2">Mileage</th>
+                <th>Hotel</th>
+                <th>Per Diem</th>
+            </tr>
+
+            {% for ewb in employee_works %}
+            <tr>
+                <td colspan="4">{{ ewb.employee.first_name }} {{ ewb.employee.last_name }}</td>
+                <td>{{ ewb.start_time }}</td>
+                <td>{{ ewb.end_time }}</td>
+                <td>{{ ewb.hours_worked }}</td>
+                <td colspan="2">{{ ewb.mileage }}</td>
+                <td>
+                    {% if ewb.hotel %}Yes
+                    {% elif ewb.hotel == False %}No
+                    {% else %}N/A
+                    {% endif %}
+                </td>
+                <td>
+                    {% if ewb.per_diem %}Yes
+                    {% elif ewb.per_diem == False %}No
+                    {% else %}N/A
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+
+            {% comment %} Employee Work Block End {% endcomment %}
+            {% endif %}
+
+            {% comment %} Item Block {% endcomment %}
+            <tr>
+                <th >Item</th>
+                <th>Reading</th>
+                <th colspan="4">Safety Setting</th>
+                <th colspan="5" style="background-color: lightcoral">What was the call</th>
+            </tr>
+            <tr>
+                <th>RPM</th>
+                <td>{{ rpm|default_if_none:"--" }}</td>
+                <th>LO</th>
+                <td>{{ safety_setting_lo1|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ safety_setting_hi1|default_if_none:"--" }}</td>
+                <td colspan="5" rowspan="2">{{ what_was_the_call|default_if_none:"--" }}</td>
+            </tr>
+            <tr>
+                <th>Suction</th>
+                <td>{{ suction|default_if_none:"--" }}</td>
+                <th>LO</th>
+                <td>{{ safety_setting_lo2|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ safety_setting_hi2|default_if_none:"--" }}</td>
+            </tr>
+            <tr>
+                <th>Discharge</th>
+                <td>{{ discharge1|default_if_none:"--" }}</td>
+                <th>LO</th>
+                <td>{{ safety_setting_lo3|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ safety_setting_hi3|default_if_none:"--" }}</td>
+                <th colspan="5" style="background-color: lightcoral">What was found</th>
+            </tr>
+            <tr>
+                <th>Discharge</th>
+                <td>{{ discharge2|default_if_none:"--" }}</td>
+                <th>LO</th>
+                <td>{{ safety_setting_lo4|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ safety_setting_hi4|default_if_none:"--" }}</td>
+                <td colspan="5" rowspan="6">{{ what_was_found|default_if_none:"--" }}</td>
+            </tr>
+            <tr>
+                <th>Discharge</th>
+                <td>{{ discharge3|default_if_none:"--" }}</td>
+                <th>LO</th>
+                <td>{{ safety_setting_lo5|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ safety_setting_hi5|default_if_none:"--" }}</td>
+            </tr>
+            <tr>
+                <th colspan="2">Engine Oil Pressure / Kill</th>
+                <td>{{ engine_oil_pressure|default_if_none:"--" }}</td>
+                <th colspan="2">Engine Oil Temp</th>
+                <td>{{ engine_oil_temp|default_if_none:"--" }}</td>
+            </tr>
+            <tr>
+                <th colspan="2">Compressor Oil Pressure / Kill</th>
+                <td>{{ compressor_oil_pressure|default_if_none:"--" }}</td>
+                <th colspan="2">Compressor Oil Temp</th>
+                <td>{{ compressor_oil_temp|default_if_none:"--" }}</td>
+            </tr>
+
+            {% comment %} Item Block End {% endcomment %}
+
+            {% comment %} Cylinder Block {% endcomment %}
+
+            <tr>
+                <th colspan="6">Cylinder Temperature</th>
+            </tr>
+            <tr>
+                <th>TS1</th>
+                <td>{{ ts1|default_if_none:"--" }}</td>
+                <th>TD1</th>
+                <td>{{ td1|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ cylinder_temperature_hi1|default_if_none:"--" }}</td>
+            </tr>
+            <tr>
+                <th>TS2</th>
+                <td>{{ ts2|default_if_none:"--" }}</td>
+                <th>TD2</th>
+                <td>{{ td2|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ cylinder_temperature_hi2|default_if_none:"--" }}</td>
+                <th colspan="5" style="background-color: lightcoral">What was performed</th>
+            </tr>
+            <tr>
+                <th>TS3</th>
+                <td>{{ ts3|default_if_none:"--" }}</td>
+                <th>TD3</th>
+                <td>{{ td3|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ cylinder_temperature_hi3|default_if_none:"--" }}</td>
+                <td colspan="5" rowspan="6">{{ what_was_performed|default_if_none:"--" }}</td>
+            </tr>
+            <tr>
+                <th>TS4</th>
+                <td>{{ ts4|default_if_none:"--" }}</td>
+                <th>TD4</th>
+                <td>{{ td4|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ cylinder_temperature_hi4|default_if_none:"--" }}</td>
+            </tr>
+
+            {% comment %} Cylinder Block End {% endcomment %}
+
+            {% comment %} Exhaust Block {% endcomment %}
+
+            <tr>
+                <th colspan="6">Exhaust Temperature</th>
+            </tr>
+            <tr>
+                <th>L</th>
+                <td>{{ exhaust_temperature_l|default_if_none:"--" }}</td>
+                <th>R</th>
+                <td>{{ exhaust_temperature_r|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ exhaust_temperature_hi|default_if_none:"--" }}</td>
+            </tr>
+
+            {% comment %} Exhaust Block End {% endcomment %}
+
+            {% comment %} Manifold Block {% endcomment %}
+
+
+            <tr>
+                <th colspan="6">Manifold Temperature</th>
+            </tr>
+            <tr>
+                <th>L</th>
+                <td>{{ manifold_temperature_l|default_if_none:"--" }}</td>
+                <th>R</th>
+                <td>{{ manifold_temperature_r|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ manifold_temperature_hi|default_if_none:"--" }}</td>
+            </tr>
+
+            {% comment %} Manifold Block End {% endcomment %}
+
+            {% comment %} Manifold Pressure Block {% endcomment %}
+
+            <tr>
+                <th colspan="6">Manifold Pressure</th>
+                <th colspan="5" style="background-color: lightcoral">Parts Used</th>
+            </tr>
+            <tr>
+                <th>L</th>
+                <td>{{ manifold_pressure_l|default_if_none:"--" }}</td>
+                <th>R</th>
+                <td>{{ manifold_pressure_r|default_if_none:"--" }}</td>
+                <th>LO / HI</th>
+                <td>{{ lo_hi|default_if_none:"--" }}</td>
+                <td colspan="5" rowspan="3">{{ future_work_needed|default_if_none:"--" }}</td>
+            </tr>
+            <tr>
+                <th>Jacket Water Temperature</th>
+                <td>{{ jacket_water_pressure|default_if_none:"--" }}</td>
+                <th>HI</th>
+                <td>{{ manifold_pressure_hi1 }}</td>
+                <th>MMCFD</th>
+                <td>{{ mmcfd|default_if_none:"--" }}</td>
+            </tr>
+            <tr>
+                <th>Aux Temp</th>
+                <td>{{ aux_temp }}</td>
+                <th>HI</th>
+                <td>{{ manifold_pressure_hi2|default_if_none:"--" }}</td>
+                <th>Hour Meter Reading</th>
+                <td>{{ hour_meter_reading|default_if_none:"--" }}</td>
+            </tr>
+
+            {% comment %} Manifold Pressure Block End {% endcomment %}
+
+            {% if additional_notes %}
+            <tr>
+                <th colspan="11" style="background-color: lightcoral">Additional notes</th>
+            </tr>
+            <tr>
+                <td colspan="11">{{ additional_notes }}</td>
+            </tr>
+            {% endif %}
+
+            <tr>
+                <td colspan="6" style="background-color: lightcoral">Customer Signature</td>
+                <td colspan="5" style="background-color: lightcoral">Customer Printed Name</td>
+            </tr>
+            <tr>
+                <td colspan="6" style="text-align: center;">
+                    <img src="{{ customer_signature }}" alt="signature" height="50"/>
+                </td>
+                <td colspan="5" style="text-align: center;">
+                    <span style="font-size: 14px;">{{ customer_printed_name }}</span>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+xhtml2pdf==0.2.7
+reportlab==3.6.6
+celery==5.2.7
+coreapi==2.3.3
+django-filter==23.2
+django-redis==5.2.0
+Django==4.2
+# djangorestframework-jwt==1.11.0
+drf-jwt==1.19.2
+# djnagorestframework-simplejwt==5.2.2
+djangorestframework==3.14.0
+djangorestframework-filters==1.0.0.dev0
+drf-yasg==1.21.5
+invoke==0.17.0
+markdown==3.1.1
+packaging==23.1
+parameterized==0.7.1
+Pillow==9.5.0
+psycopg2-binary==2.9.6
+redis==5.2.0
+pusher==2.1.4
+pusher-push-notifications==2.0.0
+user-agents==1.1.0
+django-auditlog==2.2.1
+django-cors-headers==4.0.0
+django-solo==2.0.0
+gunicorn==20.1.0
+# djangorestframework-jwt==1.11.0
+drf-jwt==1.19.2
+# djnagorestframework-simplejwt==5.2.2

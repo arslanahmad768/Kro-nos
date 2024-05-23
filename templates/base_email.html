@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}KROnos{% endblock title %}</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,  maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link href="https://fonts.googleapis.com/css?family=Lato&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald&amp;display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      img {
+        display: block;
+      }
+      a {
+        display: block;
+        text-decoration: none;
+        color: #3f50b5;
+      }
+      .title {
+        font-size: 26px;
+      }
+      .text {
+        font-size: 16px;
+      }
+      .item {
+        display: inline-block;
+      }
+      @media screen and (max-width: 480px) {
+        .title {
+          font-size: 22px;
+        }
+        .item {
+          display: block;
+          padding-bottom: 5px;
+        }
+      }
+    </style>
+    <center>
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family: 'Lato, Arial, sans-serif'; padding: 20px">
+        <tbody>
+          <tr>
+            <td>
+              <table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 600px; margin: auto; border: 2px solid rgba(0,0,0,0.7); border-radius: 6px; padding: 20px;">
+                <tbody>
+                  <tr>
+                    <td>
+                      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="padding: 10px 0 30px; text-align: center;">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <img src="{{api_host}}/static/images/KROnos_logo.png" width="90" style="margin: auto;">
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      {% block content %}{% endblock content %}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </center>
+  </body>
+</html>

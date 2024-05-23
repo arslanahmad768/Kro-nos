@@ -1,0 +1,28 @@
+[Unit]
+Description=K & R Celery Daemon
+# Requires=gunicorn.socket
+After=network.target
+
+[Service]
+Type=forking
+# the specific user that our service will run as
+User=kro-nos
+Group=www-data
+# another option for an even more restricted service is
+# DynamicUser=yes
+# see http://0pointer.net/blog/dynamic-users-with-systemd.html
+# RuntimeDirectory=gunicorn
+Environment="LC_ALL=en_US.UTF-8"
+Environment="LANG=en_US.UTF-8"
+# Environment="LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/kayman/Downloads/Python-3.10.11"
+WorkingDirectory=/var/www/kandr
+ExecStart=/var/www/kandr/venv/bin/celery -A config.celery multi start w1 --loglevel=Info --logfile=/tmp/pid.log --pidfile=/tmp/celery-pid
+# ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/var/www/kandr/venv/bin/celery -A config.celery multi stopwait w1 --pidfile=/tmp/celery-pid
+ExecReload=/var/www/kandr/venv/bin/celery -A config.celery multi restart w1 --pidfile=/tmp/celery-pid
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
